@@ -23,7 +23,7 @@ def pick_meal(dish_type_df):
         if decision == 'y':
             popularity = dish_type_df.loc[dish_type_df['dish_name'] == meal, 'popularity'].item()
             if popularity == 1:
-                # remove dish from df if popularity is 1 
+                # remove dish from df if popularity is 1
                 dish_type_df = dish_type_df[dish_type_df['dish_name'] != meal]
             # decrease popularity
             else: dish_type_df['popularity'][dish_type_df['dish_name'] == meal] = popularity - 1
@@ -34,9 +34,9 @@ def add_meal():
     dish_name = input('Dish name: ').lower()
     popularity = int(input('Popularity: '))
     dish_type = input('Disch Type [main\\salat]: ').lower()
-    if dish_type == 'main': 
+    if dish_type == 'main':
         dish_type = 'main_course'
-    
+
     conn = sqlite3.connect('dishes.db')
     with conn:
         c = conn.cursor()
@@ -48,7 +48,7 @@ def add_meal():
             if update_record == 'y':
                 c.execute("UPDATE " + dish_type + "_orig SET popularity = '%s' WHERE dish_name = '%s'" % (popularity, dish_name))
         else: c.execute("INSERT INTO " + dish_type + "_orig (dish_name, popularity) VALUES ('%s', '%s')" % (dish_name, popularity))
-    
+
 # define clear function
 def clear():
     # for windows
@@ -79,16 +79,13 @@ while True:
 
     elif decision == '2':
         salat_df = pick_meal(salat_df)
-    
+
     elif decision == '4':
         print(main_course_df[['dish_name', 'popularity']])
         print(salat_df[['dish_name', 'popularity']])
 
     elif decision == '5':
         add_meal()
-    
+
     elif decision == 'exit':
         break
-        
-
-
