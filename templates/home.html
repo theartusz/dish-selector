@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>Make your choice</h3>
+    <p>
+        <a href=meal >
+            <button class=grey style="height:75px;width:150px">Main course</button>
+        </a>
+        <a href=meal >
+            <button class=grey style="height:75px;width:150px">Salad</button>
+        </a>
+        <a href=meal >
+            <button class=grey style="height:75px;width:150px">Desert</button>
+        </a>
+    </p>
+    <h1>{% block title %} Available dishes {% endblock %}</h1>
+    {% for dish in dishes %}
+        <div class='dish'>
+            <p>{{ dish['dish_name'], dish['dish_type'] }}</p>
+    {% endfor %}
+{% endblock %}

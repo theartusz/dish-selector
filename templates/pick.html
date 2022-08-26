@@ -5,4 +5,10 @@
         <div class='dish'>
             <p>{{ dish }}</p>
         </div>
+      <a href="{{ url_for('pick_meal') }}" >
+        <button class=grey style="height:75px;width:150px">Something else</button>
+      </a>
+      <a href="{{ url_for('confirm') }}" >
+        <button class=grey style="height:75px;width:150px">Configrm choice</button>
+      </a>
 {% endblock %}

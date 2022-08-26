@@ -17,22 +17,25 @@ def get_data(dish_type):
     conn.close()
     return dishes
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    dishes = get_data('main')
+def change_dish_status():
+    return
 
-    if request.method == 'POST':
-        if request.form.get('pick') == 'Pick random dish':
-            return redirect("meal")
-    return render_template('index.html', dishes=dishes)
+@app.route('/')
+def home():
+    dishes = get_data('main')
+    return render_template('home.html', dishes=dishes)
+
+@app.route('/')
+def confirm():
+    change_dish_status()
+    dishes = get_data('main')
+    return render_template('home.html', dishes=dishes)
 
 @app.route('/meal')
 def pick_meal():
     dishes = get_data('main')
     meal_choice = random.randint(1, len(dishes))
     for k in dishes:
-        print(k['id'], file=sys.stderr)
-        print('Meal choice: '+str(meal_choice), file=sys.stdout)
         if k['id'] == meal_choice:
             dish = k['dish_name']
     return render_template('pick.html', dish=dish)
