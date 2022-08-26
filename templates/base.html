@@ -23,10 +23,6 @@
         <a href="{{ url_for('index') }}">Dish Selector</a>
     </nav>
     <hr>
-    <h3>Make your choice</h3>
-      <form method="post" action="/">
-        <input type="submit" value="Pick random dish" name="pick"/>
-      </form>
     <div class="content">
         {% block content %} {% endblock %}
     </div>

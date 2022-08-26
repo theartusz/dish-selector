@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h3>Make your choice</h3>
+      <form method="post" action="/">
+        <input type="submit" value="Pick random dish" name="pick"/>
+      </form>
     <h1>{% block title %} Dishes {% endblock %}</h1>
     {% for dish in dishes %}
         <div class='dish'>
-            <p>{{ dish['dish_name'] }}</p>
-            <h2>{{ dish['cooked'] }}</h2>
-            <p>{{ dish['dish_type'] }}</p>
-        </div>
+            <p>{{ dish['dish_name'], dish['cooked'], dish['dish_type'] }}</p>
     {% endfor %}
 {% endblock %}
