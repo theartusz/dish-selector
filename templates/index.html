@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} Dishes {% endblock %}</h1>
+    {% for dish in dishes %}
+        <div class='dish'>
+            <p>{{ dish['dish_name'] }}</p>
+            <h2>{{ dish['cooked'] }}</h2>
+            <p>{{ dish['dish_type'] }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
