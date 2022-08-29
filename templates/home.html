@@ -1,21 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <div class="container">
     <h3>Make your choice</h3>
+    <br/>
     <p>
-        <a href=meal >
-            <button class=grey style="height:75px;width:150px">Main course</button>
-        </a>
-        <a href=meal >
-            <button class=grey style="height:75px;width:150px">Salad</button>
-        </a>
-        <a href=meal >
-            <button class=grey style="height:75px;width:150px">Desert</button>
-        </a>
+      <a href=meal >
+        <button type="button" class="btn btn-primary">Main course</button>
+      </a>
+      <a href=meal >
+        <button type="button" class="btn btn-primary">Salad</button>
+      </a>
+      <a href=meal >
+        <button type="button" class="btn btn-primary">Desert</button>
+      </a>
     </p>
     <h1>{% block title %} Available dishes {% endblock %}</h1>
     {% for dish in dishes %}
         <div class='dish'>
             <p>{{ dish['dish_name'], dish['dish_type'] }}</p>
+  </div>
     {% endfor %}
 {% endblock %}
+
+
+kapeczke horczice (malom lyzeczke)
+mialo by byc wajco - trzeja fest wyrobic
+kapeczke warczestrowej omaczki
+kupa soli - celkem kupa
+pieprz

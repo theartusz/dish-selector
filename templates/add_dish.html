@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form class="container">
+  <div class="form-group">
+    <label for="dish_name" class="form-label">Dish name</label>
+    <input type="text" class="form-control" id="dish_name" placeholder="Dish">
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Type</label>
+    <input type="password" class="form-control" id="exampleInputPassword1">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

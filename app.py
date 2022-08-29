@@ -21,6 +21,8 @@ def change_dish_status():
     return
 
 @app.route('/')
+#def test():
+#    return render_template('home2.html')
 def home():
     dishes = get_data('main')
     return render_template('home.html', dishes=dishes)
@@ -39,3 +41,7 @@ def pick_meal():
         if k['id'] == meal_choice:
             dish = k['dish_name']
     return render_template('pick.html', dish=dish)
+
+@app.route('/add_dish')
+def add_dish():
+    return render_template('add_dish.html')
