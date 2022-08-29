@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form class="container">
+<form class="container" method="POST" action="/confirmation">
   <div class="form-group">
-    <label for="dish_name" class="form-label">Dish name</label>
-    <input type="text" class="form-control" id="dish_name" placeholder="Dish">
+    <input name="dish_name" type="text" class="form-control" id="dish_name" placeholder="dish name - Pizza">
   </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Type</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+  <br/>
+  <div class="form-group">
+    <input name="dish_type" type="text" class="form-control" id="dish_type" placeholder="dish type - main, salad or desert">
   </div>
+  <br/>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 {% endblock %}
