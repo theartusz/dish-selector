@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS posts;
+
+CREATE TABLE dishes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    dish_name TEXT NOT NULL DEFAULT,
+    cooked  BOOLEAN NOT NULL,
+    dish_type TEXT NOT NULL
+);

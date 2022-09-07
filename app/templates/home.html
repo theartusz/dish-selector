@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h3>Make your choice</h3>
+    <br/>
+    <form class="container" method="POST" id="choice">
+      <button type="submit" id="main" name="name" value="main" class="btn btn-primary">Main course</button>
+      <button type="submit" id="salad" name="name" value="salad" class="btn btn-primary">Salad</button>
+    </form>
+    <br/>
+    <h1>{% block title %} Available dishes {% endblock %}</h1>
+    {% for dish in dishes %}
+        <div class='dish'>
+            <p>{{ dish['dish_name'], dish['dish_type'] }}</p>
+  </div>
+    {% endfor %}
+{% endblock %}
