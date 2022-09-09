@@ -12,16 +12,19 @@
 {% endfor %}
 
   <h1>Add a new dish</h1>
-  <form method="POST">
+  <form method="POST" enctype="multipart/form-data">
     <div class="form-group">
       {{ form.hidden_tag() }}
       {{ form.dish_name.label(class="form-label") }}
       {{ form.dish_name(class="form-control", placeholder="Pizza") }}
       <br/>
       {{ form.dish_type.label(class="form-label") }}
-      {{ form.dish_type(class="form-control", placeholder="main, salad or desert") }}
+      {{ form.dish_type(class="form-control") }}
       <br/>
-      {{ form.submit(class="btn btn-primary", id="liveToastBtn") }}
+      {{ form.dish_image.label(class="form-label") }}
+      {{ form.dish_image(class="form-control") }}
+      <br/>
+      {{ form.submit(class="btn btn-primary") }}
     </div>
   </form>
 </div>
