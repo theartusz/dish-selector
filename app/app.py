@@ -1,17 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField
-from wtforms.validators import DataRequired
-from flask_wtf.file import FileField, FileAllowed
+from wtforms.validators import DataRequired, ValidationError
 from dotenv import load_dotenv
 import os
 from pymongo import MongoClient
 from bson.objectid import ObjectId as ObId
-from bson import binary
-import sys
-import base64
-from PIL import Image
-from io import BytesIO
 
 app = Flask(__name__)
 
@@ -28,11 +22,15 @@ client = MongoClient(conn_str)
 db = client['dish-selector']
 coll = db['dishes']
 
+def validate_dish_name(form, field):
+    dish_exists = coll.find_one({'dish_name': field.data})
+    if dish_exists:
+        raise ValidationError("This dish is already in database")
+
 # create a form class
 class NewDishForm(FlaskForm):
-    dish_name = StringField(' Name of dish you want to add', validators=[DataRequired()])
+    dish_name = StringField(' Name of dish you want to add', validators=[DataRequired(), validate_dish_name])
     dish_type = SelectField('Type of the dish', choices=(coll.find().distinct('dish_type')))
-    dish_image = FileField('Picture of the dish', validators=[FileAllowed(['png'])])
     submit = SubmitField("Submit")
 
 def change_dish_status(dish_type):
@@ -69,17 +67,18 @@ def confirm(dish_id):
 
 @app.route('/add_dish', methods=['GET', 'POST'])
 def add_dish():
-    dish_name, dish_type, dish_image = None, None, None
+    dish_name, dish_type = None, None
     form = NewDishForm()
     # validate form
     if form.validate_on_submit():
         dish_name = form.dish_name.data
         dish_type = form.dish_type.data
-        dish_image = binary.Binary(form.dish_image.data.read())
-        form.dish_name.data, form.dish_type.data, form.dish_image.data = '', '', ''
-        id_ = coll.insert_one({'dish_name': dish_name, 'dish_type': dish_type, 'cooked': False, 'dish_image': dish_image})
-        print(id_.acknowledged, file=sys.stdout)
-        flash('Your dish '+dish_name+' was added!')
+        form.dish_name.data, form.dish_type.data = '', ''
+        if form.errors == False:
+            coll.insert_one({'dish_name': dish_name, 'dish_type': dish_type, 'cooked': False})
+            flash('Your dish '+dish_name+' was added!')
+        else:
+            flash('Something went wrong')
         return redirect('/add_dish')
     else:
         return render_template('add_dish.html', dish_name=dish_name, dish_type=dish_type, form=form)
