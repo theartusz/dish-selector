@@ -1,3 +1,5 @@
 flask-app/
 *.db
 .vscode
+secrets.txt
+app/__pycache__

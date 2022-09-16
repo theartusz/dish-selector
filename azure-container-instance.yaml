@@ -1,0 +1,27 @@
+name: dish-selector
+apiVersion: '2021-10-01'
+location: northeurope
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    {'/subscriptions/f0ffaa2a-83a7-4bd9-b99f-ef0dc9206131/resourcegroups/dish-selector/providers/Microsoft.ManagedIdentity/userAssignedIdentities/dish-selector-identity':{}}
+properties:
+  containers:
+  - name: dish-selector-app
+    properties:
+      image: docker.io/artuszkrol/dish-selector:latest
+      ports:
+      - protocol: TCP
+        port: 8000
+      resources:
+        requests:
+          memoryInGB: 1
+          cpu: 1
+  restartPolicy: OnFailure
+  ipAddress:
+    ports:
+    - protocol: TCP
+      port: 8000
+    type: Public
+    dnsNameLabel: dish-selector
+  osType: Linux
