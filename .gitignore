@@ -3,3 +3,5 @@ flask-app/
 .vscode
 secrets.txt
 app/__pycache__
+app/.env
+app/.DS_Store

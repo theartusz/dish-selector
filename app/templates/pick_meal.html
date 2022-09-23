@@ -2,13 +2,17 @@
 
 {% block content %}
   <div class="container">
-    <h3>{% block title %} You should cook {% endblock %}</h3>
-      <p>{{ dish.dish_name }}</p>
-      <a href="{{ url_for('pick_meal', dish_type=dish_type) }}" >
-        <button class="btn btn-primary">Something else</button>
-      </a>
-      <a href="{{ url_for('confirm', dish_id=dish['_id']) }}" >
-        <button class="btn btn-primary">Configrm choice</button>
-      </a>
+    <h3>{% block title %} You should cook: {% endblock %}</h3>
+    <div class="row">
+      <div class="col-md-4 align-self-center text-center">
+        <span>{{ dish.dish_name }}</span>
+      </div>
+      <div class="col-md-4">
+        <img src="{{ url_for('static', filename=dish.dish_image) }}" width="250px">
+      </div>
+    </div>
+  </br>
+    <a href="{{ url_for('pick_meal', dish_type=dish_type) }}"><button class="btn btn-primary">Something else</button></a>
+    <a href="{{ url_for('confirm', dish_id=dish['_id']) }}"><button class="btn btn-primary">Configrm choice</button></a>
   </div>
 {% endblock %}

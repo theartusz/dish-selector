@@ -28,6 +28,9 @@
       {{ form.dish_source.label(class="form-label") }}
       {{ form.dish_source(class="form-control", placeholder="URL or book name + page") }}
       <br/>
+      {{ form.dish_image.label(class="form-label") }}
+      {{ form.dish_image(class="form-control", placeholder="Image of the dish", type="file", id="formFile") }}
+      <br/>
       {{ form.submit(class="btn btn-primary") }}
     </div>
   </form>
