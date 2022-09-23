@@ -48,7 +48,6 @@ def change_dish_status(dish_type):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    dishes = coll.find({'cooked': False})
     # reset dishes if all were cooked
     for dish_type in coll.find().distinct('dish_type'):
         if not coll.find_one({'$and':[{'cooked': False}, {'dish_type': dish_type}]}):
@@ -56,7 +55,7 @@ def home():
     if request.method == 'POST':
         dish_type = request.form.get('name')
         return redirect(url_for('pick_meal', dish_type=dish_type))
-    return render_template('home.html', dishes=dishes)
+    return render_template('home.html')
 
 @app.route('/pick_meal/<string:dish_type>', methods=['GET', 'POST'])
 def pick_meal(dish_type):
@@ -97,6 +96,15 @@ def add_dish():
                     flash('Only .png and .jpg formats are allowed')
                 else: flash('Something went wrong')
         return render_template('add_dish.html', form=form)
+
+@app.route('/menu')
+def menu():
+    dishes = list(coll.find())
+    # reset dishes if all were cooked
+    for dish_type in coll.find().distinct('dish_type'):
+        if not coll.find_one({'$and':[{'cooked': False}, {'dish_type': dish_type}]}):
+            change_dish_status(dish_type)
+    return render_template('menu.html', dishes=dishes)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

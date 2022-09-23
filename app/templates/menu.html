@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>{% block title %} Available dishes {% endblock %}</h1>
+  </br>
+  {% for dish_type in ['main', 'salad', 'desert'] %}
+    <h2>Main course</h2>
+    </br>
+    <table class="table">
+      <thead>
+        <th scope="col">Name</th>
+        <th scope="col">Main ingrediences</th>
+        <th scope="col">Picture</th>
+        <th scope="col">Source</th>
+      </thead>
+      <tbody>
+        {% for dish in dishes %}
+          {% if dish['dish_type']==dish_type %}
+          <tr>
+            <td>{{ dish['dish_name'] }}</td>
+            <td></td>
+            <td><img src="{{ dish['dish_image'] }}" width="100px"></td>
+            {% if 'http' in dish['dish_source'] %}
+            <td><a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a></td>
+            {% else %}
+            <td>{{ dish['dish_source'] }}</td>
+            {% endif %}
+          </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endfor %}
+</div>
+{% endblock %}
