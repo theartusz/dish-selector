@@ -14,5 +14,6 @@
   </br>
     <a href="{{ url_for('pick_meal', dish_type=dish_type) }}"><button class="btn btn-primary">Something else</button></a>
     <a href="{{ url_for('confirm', dish_id=dish['_id']) }}"><button class="btn btn-primary">Configrm choice</button></a>
+    <a href="{{ url_for('already_cooked', dish_id=dish['_id'], dish_type=dish_type) }}"><button class="btn btn-primary">Already cooked</button></a>
   </div>
 {% endblock %}

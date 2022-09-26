@@ -34,7 +34,7 @@ class NewDishForm(FlaskForm):
     dish_name = StringField(' Name of dish you want to add', validators=[DataRequired()])
     dish_type = SelectField('Type of the dish', choices=(coll.find().distinct('dish_type')))
     dish_source = StringField('Where can we find the recepie?')
-    dish_image = FileField('File', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
+    dish_image = StringField('Link to image of the dish')
     submit = SubmitField("Submit")
 
     def validate_dish_name(form, field):
@@ -73,17 +73,18 @@ def confirm(dish_id):
     coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': True}})
     return redirect(url_for('home'))
 
+@app.route('/<dish_id>/<string:dish_type>')
+def already_cooked(dish_id, dish_type):
+    coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': True}})
+    return redirect(url_for('pick_meal', dish_type=dish_type))
+
 @app.route('/add_dish', methods=['GET', 'POST'])
 def add_dish():
     form = NewDishForm()
     # validate form
     if form.validate_on_submit():
         if form.errors == {}:
-            f = form.dish_image.data
-            filename = secure_filename(f.filename)
-            rel_file_path = os.path.join(app.config["UPLOAD_FOLDER"] + filename)
-            f.save(os.path.join(app.root_path +'/static/'+ rel_file_path))
-            coll.insert_one({'dish_name': form.dish_name.data, 'dish_type': form.dish_type.data, 'cooked': False, 'dish_source': form.dish_source.data, 'dish_image':rel_file_path})
+            coll.insert_one({'dish_name': form.dish_name.data, 'dish_type': form.dish_type.data, 'cooked': False, 'dish_source': form.dish_source.data, 'dish_image':form.dish_image.data})
             flash('Success, your dish '+form.dish_name.data+' was added!')
         return redirect('/add_dish')
     else:

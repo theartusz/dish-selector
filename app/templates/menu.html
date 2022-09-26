@@ -7,11 +7,12 @@
   {% for dish_type in ['main', 'salad', 'desert'] %}
     <h2>Main course</h2>
     </br>
-    <table class="table">
+    <table class="table align-middle">
       <thead>
         <th scope="col">Name</th>
         <th scope="col">Main ingrediences</th>
         <th scope="col">Picture</th>
+        <th scope="col">Cooked</th>
         <th scope="col">Source</th>
       </thead>
       <tbody>
@@ -21,10 +22,15 @@
             <td>{{ dish['dish_name'] }}</td>
             <td></td>
             <td><img src="{{ dish['dish_image'] }}" width="100px"></td>
-            {% if 'http' in dish['dish_source'] %}
-            <td><a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a></td>
+            {% if dish['cooked'] == true %}
+              <td><img src="{{ url_for('static', filename='check-mark.png') }}" width="30px"></td>
             {% else %}
-            <td>{{ dish['dish_source'] }}</td>
+              <td></td>
+            {% endif %}
+            {% if 'http' in dish['dish_source'] %}
+              <td><a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a></td>
+            {% else %}
+              <td>{{ dish['dish_source'] }}</td>
             {% endif %}
           </tr>
           {% endif %}
