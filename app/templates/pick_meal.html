@@ -4,16 +4,33 @@
   <div class="container">
     <h3>{% block title %} You should cook: {% endblock %}</h3>
     <div class="row">
-      <div class="col-md-4 align-self-center text-center">
+      <div class="col-md-5 align-self-center text-center">
         <span>{{ dish.dish_name }}</span>
+        </br>
+        </br>
+        <a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a>
       </div>
       <div class="col-md-4">
         <img src="{{ dish.dish_image }}" width="250px">
       </div>
     </div>
   </br>
-    <a href="{{ url_for('pick_meal', dish_type=dish_type) }}"><button class="btn btn-primary">Something else</button></a>
-    <a href="{{ url_for('confirm', dish_id=dish['_id']) }}"><button class="btn btn-primary">Configrm choice</button></a>
-    <a href="{{ url_for('already_cooked', dish_id=dish['_id'], dish_type=dish_type) }}"><button class="btn btn-primary">Already cooked</button></a>
+    <div class="row">
+      <div class="col-md-5">
+        <a href="{{ url_for('pick_meal', dish_type=dish_type) }}"><button class="btn btn-primary">Something else</button></a>
+        <a href="{{ url_for('confirm', dish_id=dish['_id']) }}"><button class="btn btn-primary">Configrm choice</button></a>
+        <a href="{{ url_for('already_cooked', dish_id=dish['_id'], dish_type=dish_type) }}"><button class="btn btn-primary">Already cooked</button></a>
+      </div>
+<!--  <div class="col-md-4">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="vegetarian" id="flexCheckDefault" name="property_checkbox">
+          <label class="form-check-label" for="flexCheckDefault">Vegetarian</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="grill" id="flexCheckDefault" name="property_checkbox">
+          <label class="form-check-label" for="flexCheckDefault">Grill</label>
+        </div>
+      </div> -->
+    </div>
   </div>
 {% endblock %}

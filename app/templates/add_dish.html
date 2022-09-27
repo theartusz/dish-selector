@@ -16,23 +16,42 @@
 {% endfor %}
 
   <h1>Add a new dish</h1>
-  <form method="POST" enctype="multipart/form-data">
-    <div class="form-group">
-      {{ form.hidden_tag() }}
-      {{ form.dish_name.label(class="form-label") }}
-      {{ form.dish_name(class="form-control", placeholder="Pizza") }}
-      <br/>
-      {{ form.dish_type.label(class="form-label") }}
-      {{ form.dish_type(class="form-control") }}
-      <br/>
-      {{ form.dish_source.label(class="form-label") }}
-      {{ form.dish_source(class="form-control", placeholder="URL or book name + page") }}
-      <br/>
-      {{ form.dish_image.label(class="form-label") }}
-      {{ form.dish_image(class="form-control", placeholder="Image of the dish") }}
-      <br/>
-      {{ form.submit(class="btn btn-primary") }}
+  <form method="POST">
+  <div class="form-group">
+    <div class="row">
+      <div class="col">
+        {{ form.hidden_tag() }}
+        {{ form.dish_name.label(class="form-label") }}
+        {{ form.dish_name(class="form-control", placeholder="Pizza") }}
+        <br/>
+        {{ form.dish_type.label(class="form-label") }}
+        {{ form.dish_type(class="form-control") }}
+        <br/>
+        {{ form.dish_source.label(class="form-label") }}
+        {{ form.dish_source(class="form-control", placeholder="URL or book name + page") }}
+        <br/>
+        {{ form.dish_image.label(class="form-label") }}
+        {{ form.dish_image(class="form-control", placeholder="Image of the dish") }}
+        </br>
+        {{ form.dish_style.label(class="form-label") }}
+        {{ form.dish_style(class="form-control") }}
+        <br/>
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+      <div class="col">
+        <span>Properties:</span>
+        </br>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="vegetarian" id="flexCheckDefault" name="property_checkbox">
+          <label class="form-check-label" for="flexCheckDefault">Vegetarian</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="grill" id="flexCheckDefault" name="property_checkbox">
+          <label class="form-check-label" for="flexCheckDefault">Grill</label>
+        </div>
+      </div>
     </div>
+  </div>
   </form>
 </div>
 {% endblock %}

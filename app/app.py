@@ -1,14 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField
-from flask_wtf.file import FileField, FileAllowed
+from wtforms import StringField, SubmitField, SelectField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 from bson.objectid import ObjectId as ObId
 import sys
 from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -32,9 +30,10 @@ coll = db['dishes']
 # create a form class
 class NewDishForm(FlaskForm):
     dish_name = StringField(' Name of dish you want to add', validators=[DataRequired()])
-    dish_type = SelectField('Type of the dish', choices=(coll.find().distinct('dish_type')))
+    dish_type = SelectField('Type of the dish', choices=['main', 'salad', 'breakfast', 'desert'])
     dish_source = StringField('Where can we find the recepie?')
     dish_image = StringField('Link to image of the dish')
+    dish_style = SelectField('What is the vibe?', choices=['nothing special','mexican', 'italiano', 'goralia', 'mediteranian', 'norsk'])
     submit = SubmitField("Submit")
 
     def validate_dish_name(form, field):
@@ -84,7 +83,14 @@ def add_dish():
     # validate form
     if form.validate_on_submit():
         if form.errors == {}:
-            coll.insert_one({'dish_name': form.dish_name.data, 'dish_type': form.dish_type.data, 'cooked': False, 'dish_source': form.dish_source.data, 'dish_image':form.dish_image.data})
+            coll.insert_one({
+                'dish_name': form.dish_name.data,
+                'dish_type': form.dish_type.data,
+                'cooked': False,
+                'dish_source': form.dish_source.data,
+                'dish_image':form.dish_image.data,
+                'dish_style': form.dish_style,
+                'dish_properties': request.form.getlist('property_checkbox')})
             flash('Success, your dish '+form.dish_name.data+' was added!')
         return redirect('/add_dish')
     else:
