@@ -94,7 +94,7 @@ def add_dish():
                 'cooked': False,
                 'dish_source': form.dish_source.data,
                 'dish_image':form.dish_image.data,
-                'dish_style': form.dish_style,
+                'dish_style': form.dish_style.data,
                 'dish_properties': request.form.getlist('property_checkbox')})
             flash('Success, your dish '+form.dish_name.data+' was added!')
         return redirect('/add_dish')
