@@ -22,9 +22,16 @@
               <td>{{ dish['dish_name'] }}</td>
               <td><img src="{{ dish['dish_image'] }}" width="100px"></td>
               {% if dish['cooked'] == true %}
-                <td><img src="{{ url_for('static', filename='check-mark.png') }}" width="30px"></td>
+                <td>
+                  <a class="btn btn-default" href="{{ url_for('change_status', dish_id=dish['_id'], dish_status=False) }}">
+                    <img src="{{ url_for('static', filename='check-mark.png') }}" width="30px">
+                  </a>
               {% else %}
-                <td></td>
+                <td>
+                  <a class="btn btn-default" href="{{ url_for('change_status', dish_id=dish['_id'], dish_status=True) }}">
+                      <img src="{{ url_for('static', filename='plus.png') }}" width="30px">
+                  </a>
+                </td>
               {% endif %}
               {% if 'http' in dish['dish_source'] %}
                 <td><a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a></td>
@@ -38,5 +45,7 @@
       </table>
     </div>
   {% endfor %}
+  <p>Big clap to authors of icons used:</p>
+  <a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Pixel perfect - Flaticon</a>
 </div>
 {% endblock %}

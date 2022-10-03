@@ -41,7 +41,7 @@ class NewDishForm(FlaskForm):
         if dish_exists:
             raise ValidationError("dish duplicate")
 
-def change_dish_status(dish_type):
+def reset(dish_type):
     coll.update_many({'dish_type': dish_type}, {'$set': {'cooked': False}})
     return
 
@@ -50,7 +50,7 @@ def home():
     # reset dishes if all were cooked
     for dish_type in coll.find().distinct('dish_type'):
         if not coll.find_one({'$and':[{'cooked': False}, {'dish_type': dish_type}]}):
-            change_dish_status(dish_type)
+            reset(dish_type)
     if request.method == 'POST':
         dish_type = request.form.get('name')
         return redirect(url_for('pick_meal', dish_type=dish_type))
@@ -67,15 +67,20 @@ def pick_meal(dish_type):
             'size': 1 } }]))[0]
     return render_template('pick_meal.html', dish=dish, dish_type=dish_type)
 
-@app.route('/<dish_id>')
+@app.route('/<string:dish_id>')
 def confirm(dish_id):
     coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': True}})
     return redirect(url_for('home'))
 
-@app.route('/<dish_id>/<string:dish_type>')
+@app.route('/string:<dish_id>/<string:dish_type>')
 def already_cooked(dish_id, dish_type):
     coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': True}})
     return redirect(url_for('pick_meal', dish_type=dish_type))
+
+@app.route('/<string:dish_id>/<string:dish_status>/')
+def change_status(dish_id, dish_status):
+    coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': dish_status}})
+    return redirect(url_for('menu'))
 
 @app.route('/add_dish', methods=['GET', 'POST'])
 def add_dish():
@@ -107,11 +112,7 @@ def add_dish():
 @app.route('/menu')
 def menu():
     dishes = list(coll.find())
-    # reset dishes if all were cooked
-    for dish_type in coll.find().distinct('dish_type'):
-        if not coll.find_one({'$and':[{'cooked': False}, {'dish_type': dish_type}]}):
-            change_dish_status(dish_type)
     return render_template('menu.html', dishes=dishes)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(port=5000)
