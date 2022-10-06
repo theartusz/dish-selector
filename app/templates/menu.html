@@ -26,10 +26,11 @@
                   <a class="btn btn-default" href="{{ url_for('change_status', dish_id=dish['_id'], dish_status=False) }}">
                     <img src="{{ url_for('static', filename='check-mark.png') }}" width="30px">
                   </a>
+                </td>
               {% else %}
                 <td>
                   <a class="btn btn-default" href="{{ url_for('change_status', dish_id=dish['_id'], dish_status=True) }}">
-                      <img src="{{ url_for('static', filename='plus.png') }}" width="30px">
+                    <img src="{{ url_for('static', filename='plus.png') }}" width="30px">
                   </a>
                 </td>
               {% endif %}

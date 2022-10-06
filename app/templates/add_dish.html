@@ -32,23 +32,18 @@
         <br/>
         {{ form.dish_image.label(class="form-label") }}
         {{ form.dish_image(class="form-control", placeholder="Image of the dish") }}
-        </br>
-        {{ form.dish_style.label(class="form-label") }}
-        {{ form.dish_style(class="form-control") }}
         <br/>
         {{ form.submit(class="btn btn-primary") }}
       </div>
       <div class="col">
         <span>Properties:</span>
         </br>
+        {% for property in dish_properties %}
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="vegetarian" id="flexCheckDefault" name="property_checkbox">
-          <label class="form-check-label" for="flexCheckDefault">Vegetarian</label>
+          <input class="form-check-input" type="checkbox" value="{{ property }}" id="flexCheckDefault" name="property_checkbox">
+          <label class="form-check-label" for="flexCheckDefault">{{ property }}</label>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="grill" id="flexCheckDefault" name="property_checkbox">
-          <label class="form-check-label" for="flexCheckDefault">Grill</label>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>

@@ -3,10 +3,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, BooleanField
 from wtforms.validators import DataRequired, ValidationError
 from bson.objectid import ObjectId as ObId
-import sys
 from dotenv import load_dotenv
 from pymongo import MongoClient
 import os
+#import sys
 
 app = Flask(__name__)
 
@@ -17,7 +17,6 @@ load_dotenv()
 class Config(object):
     # create secret for wtforms
     SECRET_KEY = os.getenv('SECRET_KEY')
-    UPLOAD_FOLDER = "images/"
 # initialize config
 app.config.from_object(Config)
 
@@ -27,13 +26,13 @@ client = MongoClient(conn_str, connectTimeoutMS=30000, socketTimeoutMS=None, con
 db = client['dish-selector-prod']
 coll = db['dishes']
 
+dish_properties = ['Vegetarian', 'Grill', 'Mexican', 'Asian', 'Italian', 'Goralia', 'Fish', 'Mediteranian', '']
 # create a form class
 class NewDishForm(FlaskForm):
     dish_name = StringField(' Name of dish you want to add', validators=[DataRequired()])
     dish_type = SelectField('Type of the dish', choices=['main', 'salad', 'breakfast', 'desert'])
     dish_source = StringField('Where can we find the recepie?')
     dish_image = StringField('Link to image of the dish')
-    dish_style = SelectField('What is the vibe?', choices=['nothing special','mexican', 'italiano', 'goralia', 'mediteranian', 'norsk'])
     submit = SubmitField("Submit")
 
     def validate_dish_name(form, field):
@@ -58,14 +57,19 @@ def home():
 
 @app.route('/pick_meal/<string:dish_type>', methods=['GET', 'POST'])
 def pick_meal(dish_type):
+    if request.method == 'POST' and request.form.getlist('property_checkbox') != [""]:
+        dish_filter = request.form.getlist('property_checkbox')
+    else: dish_filter = dish_properties
     # pick random meal based on category
     dish = list(coll.aggregate([
         {'$match':{
             'cooked': False,
-            'dish_type': dish_type}},
-        { '$sample':{
-            'size': 1 } }]))[0]
-    return render_template('pick_meal.html', dish=dish, dish_type=dish_type)
+            'dish_type': dish_type,
+            'dish_properties': {'$in': dish_filter}
+            }},
+        {'$sample':{'size': 1}}
+        ]))[0]
+    return render_template('pick_meal.html', dish=dish, dish_type=dish_type, dish_properties=dish_properties)
 
 @app.route('/<string:dish_id>')
 def confirm(dish_id):
@@ -79,7 +83,10 @@ def already_cooked(dish_id, dish_type):
 
 @app.route('/<string:dish_id>/<string:dish_status>/')
 def change_status(dish_id, dish_status):
-    coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': dish_status}})
+    if dish_status == 'True':
+        dish_status = True
+    else: dish_status = False
+    coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': bool(dish_status)}})
     return redirect(url_for('menu'))
 
 @app.route('/add_dish', methods=['GET', 'POST'])
@@ -94,7 +101,6 @@ def add_dish():
                 'cooked': False,
                 'dish_source': form.dish_source.data,
                 'dish_image':form.dish_image.data,
-                'dish_style': form.dish_style.data,
                 'dish_properties': request.form.getlist('property_checkbox')})
             flash('Success, your dish '+form.dish_name.data+' was added!')
         return redirect('/add_dish')
@@ -107,7 +113,7 @@ def add_dish():
                 elif errorMessage == 'Images only!':
                     flash('Only .png and .jpg formats are allowed')
                 else: flash('Something went wrong')
-        return render_template('add_dish.html', form=form)
+        return render_template('add_dish.html', form=form, dish_properties=dish_properties)
 
 @app.route('/menu')
 def menu():
