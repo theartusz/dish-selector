@@ -52,11 +52,11 @@ def home():
             reset(dish_type)
     if request.method == 'POST':
         dish_type = request.form.get('name')
-        return redirect(url_for('pick_meal', dish_type=dish_type))
+        return redirect(url_for('pick_dish', dish_type=dish_type))
     return render_template('home.html')
 
-@app.route('/pick_meal/<string:dish_type>', methods=['GET', 'POST'])
-def pick_meal(dish_type):
+@app.route('/pick_dish/<string:dish_type>', methods=['GET', 'POST'])
+def pick_dish(dish_type):
     if request.method == 'POST' and request.form.getlist('property_checkbox') != [""]:
         dish_filter = request.form.getlist('property_checkbox')
     else: dish_filter = dish_properties
@@ -69,7 +69,7 @@ def pick_meal(dish_type):
             }},
         {'$sample':{'size': 1}}
         ]))[0]
-    return render_template('pick_meal.html', dish=dish, dish_type=dish_type, dish_properties=dish_properties)
+    return render_template('pick_dish.html', dish=dish, dish_type=dish_type, dish_properties=dish_properties)
 
 @app.route('/<string:dish_id>')
 def confirm(dish_id):
@@ -79,7 +79,7 @@ def confirm(dish_id):
 @app.route('/string:<dish_id>/<string:dish_type>')
 def already_cooked(dish_id, dish_type):
     coll.update_one({'_id': ObId(dish_id)}, {'$set':{'cooked': True}})
-    return redirect(url_for('pick_meal', dish_type=dish_type))
+    return redirect(url_for('pick_dish', dish_type=dish_type))
 
 @app.route('/<string:dish_id>/<string:dish_status>/')
 def change_status(dish_id, dish_status):
