@@ -4,4 +4,6 @@ flask-app/
 secrets.txt
 app/__pycache__
 app/.env
-app/.DS_Store
+*.DS_Store
+app/fly.toml
+app/Procfile
