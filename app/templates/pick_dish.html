@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <form method="POST" action="{{ url_for('pick_dish', dish_type=dish_type) }}">
+      <div class="row">
+        <div class="col-md-2">
+          <button class="btn btn-primary">Something else</button>
+        </div>
+        <div class="col-md-2">
+          <a href="{{ url_for('confirm', dish_id=dish['_id']) }}"><button class="btn btn-success">Configrm choice</button></a>
+        </div>
+        <div class="col-md-2">
+          <a href="{{ url_for('already_cooked', dish_id=dish['_id'], dish_type=dish_type) }}"><button class="btn btn-secondary">Already cooked</button></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-5">
+        </br>
+        {% for property in dish_properties %}
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="{{ property }}" id="flexRadioDefault" name="property_checkbox" checked>
+          <label class="form-check-label" for="flexCheckDefault">{{ property }}</label>
+        </div>
+        {% endfor %}
+        </div>
+      </div>
+    </form>
+    </br>
+    <h3>{% block title %} You should cook: {% endblock %}</h3>
+    <div class="row">
+      <div class="col-5 align-self-center text-center">
+        <span>{{ dish.dish_name }}</span>
+        </br>
+        </br>
+        {% if 'http' in dish['dish_source'] %}
+          <a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a>
+        {% else %}
+          {{ dish['dish_source'] }}
+        {% endif %}
+      </div>
+      <div class="col-4">
+        <img src="{{ dish.dish_image }}" width="250px">
+      </div>
+    </div>
+  </br>
+  </div>
+{% endblock %}

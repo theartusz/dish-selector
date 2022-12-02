@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>{% block title %} Available dishes {% endblock %}</h1>
+  </br>
+  {% for dish_type in ['main', 'salad', 'desert'] %}
+    <h2>Main course</h2>
+    </br>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <th scope="col">Name</th>
+          <th scope="col">Picture</th>
+          <th scope="col">Cooked</th>
+          <th scope="col">Source</th>
+        </thead>
+        <tbody>
+          {% for dish in dishes %}
+            {% if dish['dish_type']==dish_type %}
+            <tr>
+              <td>{{ dish['dish_name'] }}</td>
+              <td><img src="{{ dish['dish_image'] }}" width="100px"></td>
+              {% if dish['cooked'] == true %}
+                <td>
+                  <a class="btn btn-default" href="{{ url_for('change_status', dish_id=dish['_id'], dish_status=False) }}">
+                    <img src="{{ url_for('static', filename='check-mark.png') }}" width="30px">
+                  </a>
+                </td>
+              {% else %}
+                <td>
+                  <a class="btn btn-default" href="{{ url_for('change_status', dish_id=dish['_id'], dish_status=True) }}">
+                    <img src="{{ url_for('static', filename='plus.png') }}" width="30px">
+                  </a>
+                </td>
+              {% endif %}
+              {% if 'http' in dish['dish_source'] %}
+                <td><a class="btn btn-outline-success" href="{{ dish['dish_source'] }}" role="button">Go to web</a></td>
+              {% else %}
+                <td>{{ dish['dish_source'] }}</td>
+              {% endif %}
+            </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endfor %}
+  <p>Big clap to authors of icons used:</p>
+  <a href="https://www.flaticon.com/free-icons/add" title="add icons">Add icons created by Pixel perfect - Flaticon</a>
+</div>
+{% endblock %}
