@@ -120,5 +120,10 @@ def menu():
     dishes = list(coll.find())
     return render_template('menu.html', dishes=dishes)
 
+@app.route('/menu/reset/<string:dish_type>')
+def reset_menu(dish_type):
+    reset(dish_type)
+    return redirect(url_for('menu'))
+
 if __name__ == "__main__":
     app.run(port=5000)
