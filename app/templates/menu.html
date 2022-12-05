@@ -5,7 +5,14 @@
   <h1>{% block title %} Available dishes {% endblock %}</h1>
   </br>
   {% for dish_type in ['main', 'salad', 'desert'] %}
-    <h2>Main course</h2>
+  <div class="row">
+    <div class="col-md-2">
+      <h2>{{ dish_type | capitalize }}</h2>
+    </div>
+    <div class="col-md-2">
+      <a class="btn btn-danger" href="{{ url_for('reset_menu', dish_type=dish_type) }}">Reset</a>
+    </div>
+  <div>
     </br>
     <div class="table-responsive">
       <table class="table align-middle">
